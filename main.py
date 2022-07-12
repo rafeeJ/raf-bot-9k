@@ -1,18 +1,25 @@
 import discord
+from discord.ext import commands
+
 import os
+import re
+from random import randrange
 
-client = discord.Client()
+bot = commands.Bot(command_prefix='$')
 
-@client.event
-async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+@bot.command()
+async def roll(ctx, dice_size):
+    result = re.match('d(\d{1,8})', dice_size, flags=re.IGNORECASE)
+    if result:
+        dice_to_roll = int(result.group(1))
+        rolled_number = randrange(dice_to_roll) + 1
+        if rolled_number == dice_to_roll:
+            await ctx.send('Oh baby, a natural {}!'.format(rolled_number), file=discord.File('imgs/nat.gif'))
+        elif rolled_number == 1 and dice_to_roll != 1:
+            await ctx.send('Hhahaha natural {} hahahah'.format(rolled_number), file=discord.File('imgs/fail.gif'))
+        else:
+            await ctx.send('You rolled a {}'.format(rolled_number))
+    else:
+        await ctx.send('Syntax is: $roll d<number>', delete_after=5)
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello, {}!'.format(message.author))
-
-client.run(os.environ['token'])
+bot.run(os.environ['token'])
