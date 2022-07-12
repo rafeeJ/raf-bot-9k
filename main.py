@@ -10,7 +10,7 @@ bot = commands.Bot(command_prefix='$')
 @bot.command()
 async def roll(ctx, dice_size):
     result = re.match('d(\d{1,2})', dice_size, flags=re.IGNORECASE)
-    if len(result) > 0:
+    if result:
         n = randrange(int(result.group(1)))
         await ctx.send('You rolled a {}'.format(n + 1))
     else:
