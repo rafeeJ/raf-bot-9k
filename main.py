@@ -9,7 +9,7 @@ bot = commands.Bot(command_prefix='$')
 
 @bot.command()
 async def roll(ctx, dice_size):
-    result = re.match('d(\d{1,2})', dice_size, flags=re.IGNORECASE)
+    result = re.match('d(\d{1,8})', dice_size, flags=re.IGNORECASE)
     if result:
         dice_to_roll = int(result.group(1))
         rolled_number = randrange(dice_to_roll) + 1
