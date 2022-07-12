@@ -14,9 +14,11 @@ async def roll(ctx, dice_size):
         dice_to_roll = int(result.group(1))
         rolled_number = randrange(dice_to_roll) + 1
         if rolled_number == dice_to_roll:
-            await ctx.send('Oh baby, a natural {}'.format(rolled_number))
+            await ctx.send('Oh baby, a natural {}!'.format(rolled_number), file=discord.File('imgs/nat.gif'))
+        elif rolled_number == 1 and dice_to_roll != 1:
+            await ctx.send('Hhahaha natural {} hahahah'.format(rolled_number), file=discord.File('imgs/fail.gif'))
         else:
-            await ctx.send('You rolled a {}'.format(rolled_number), file=discord.File('imgs/nat.gif'))
+            await ctx.send('You rolled a {}'.format(rolled_number))
     else:
         await ctx.send('Syntax is: $roll d<number>', delete_after=5)
 
